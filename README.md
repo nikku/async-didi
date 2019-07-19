@@ -1,6 +1,6 @@
 # async-didi
 
-[![Build Status](https://travis-ci.org/nikku/async-didi.png?branch=master)](https://travis-ci.org/nikku/async-didi)
+[![Build Status](https://travis-ci.com/nikku/async-didi.png?branch=master)](https://travis-ci.com/nikku/async-didi)
 
 An async version of [didi](didi), the dependency injection library for JavaScript.
 
