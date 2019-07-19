@@ -6,6 +6,10 @@ All notable changes to [async-didi](https://github.com/nikku/async-didi) are doc
 
 ___Note:__ Yet to be released changes appear here._
 
+## 0.1.1
+
+* `DOCS`: clarified `didi` relation
+
 ## 0.1.0
 
 _Initial version._
