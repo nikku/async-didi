@@ -1,0 +1,8 @@
+!dist
+lib
+test
+.eslintrc
+.eslintignore
+.gitignore
+.travis.yml
+rollup.config.js

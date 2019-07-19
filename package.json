@@ -1,0 +1,46 @@
+{
+  "name": "async-didi",
+  "version": "0.0.0",
+  "description": "Async Dependency Injection for JavaScript",
+  "main": "dist/index.js",
+  "module": "dist/index.esm.js",
+  "umd:main": "dist/async-didi.umd.js",
+  "source": "lib/index.js",
+  "scripts": {
+    "all": "run-s lint test bundle test:integration",
+    "bundle": "NODE_ENV=production rollup -c",
+    "lint": "eslint .",
+    "test": "mocha -r esm test/*.spec.js",
+    "test:integration": "mocha test/integration/*.spec.js",
+    "prepare": "run-s bundle",
+    "prepublishOnly": "run-s test:integration"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/nikku/async-didi.git"
+  },
+  "keywords": [
+    "di",
+    "didi",
+    "inversion of control",
+    "dependency",
+    "injection",
+    "injector"
+  ],
+  "devDependencies": {
+    "chai": "^4.1.2",
+    "didi": "^5.0.1",
+    "eslint": "^5.6.1",
+    "eslint-plugin-bpmn-io": "^0.6.0",
+    "esm": "^3.0.84",
+    "mocha": "^5.2.0",
+    "npm-run-all": "^4.1.2",
+    "rollup": "^1.17.0",
+    "rollup-plugin-commonjs": "^10.0.1",
+    "rollup-plugin-node-resolve": "^5.2.0",
+    "rollup-plugin-terser": "^5.1.1"
+  },
+  "author": "Nico Rehwaldt <git_nikku@nixis.de>",
+  "license": "MIT",
+  "sideEffects": false
+}
