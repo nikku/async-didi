@@ -1,8 +1,8 @@
-# async-didi
+# `async-didi`
 
 [![Build Status](https://travis-ci.com/nikku/async-didi.png?branch=master)](https://travis-ci.com/nikku/async-didi)
 
-An async version of [didi](didi), the dependency injection library for JavaScript.
+An async version of [`didi`](didi), the dependency injection library for JavaScript.
 
 
 ## Example
@@ -42,9 +42,9 @@ await injector.invoke(function(car) {
 For more examples, check out [the tests](https://github.com/nikku/async-didi/blob/master/test/async-injector.spec.js).
 
 
-## How Does it Compare to didi?
+## Comparison to [`didi`][didi]
 
-* Same core features like [didi](https://github.com/nikku/didi)
+* Same core features
 * Exposes an `AsyncInjector`
 * Injector API functions `get`, `invoke` and `instantiate` are async
 * Factory functions may be async
