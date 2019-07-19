@@ -42,16 +42,18 @@ await injector.invoke(function(car) {
 For more examples, check out [the tests](https://github.com/nikku/async-didi/blob/master/test/async-injector.spec.js).
 
 
-## Usage
+## How Does it Compare to didi?
 
-Checkout [didi](https://github.com/nikku/didi) for detailed usage instructions.
+* Same core features like [didi](https://github.com/nikku/didi)
+* Exposes an `AsyncInjector`
+* Injector API functions `get`, `invoke` and `instantiate` are async
+* Factory functions may be async
+* No support for child injectors and scopes
 
 
-## Differences to [didi][didi]
+## License
 
-* async `get`, `invoke` and `instantiate` methods
-* support for async factory functions
-* no support for child injectors and scopes
+MIT
 
 
 [didi]: https://github.com/nikku/didi
