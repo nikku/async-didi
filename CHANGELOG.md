@@ -6,6 +6,12 @@ All notable changes to [async-didi](https://github.com/nikku/async-didi) are doc
 
 ___Note:__ Yet to be released changes appear here._
 
+## 0.2.0
+
+* `CHORE`: reuse `didi` internals
+* `DOCS`: misc improvements
+* `FIX`: correct annotations on async functions not being parsed
+
 ## 0.1.1
 
 * `DOCS`: clarified `didi` relation
