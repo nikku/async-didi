@@ -2,7 +2,7 @@
 
 [![Build Status](https://travis-ci.com/nikku/async-didi.svg?branch=master)](https://travis-ci.com/nikku/async-didi)
 
-An async version of [`didi`](didi), the dependency injection library for JavaScript.
+An async version of [`didi`](didi), the tiny dependency injection container for JavaScript.
 
 
 ## Example
@@ -14,19 +14,19 @@ function Car(engine) {
   };
 }
 
-const createEngine = async function(power) {
+async function createEngine(power) {
   return {
     start: function() {
       console.log('Starting engine with ' + power + 'hp');
     }
   };
-};
+}
 
 const {
   AsyncInjector
 } = require('async-didi');
 
-var injector = new AsyncInjector([
+const injector = new AsyncInjector([
   {
     'car': ['type', Car],
     'engine': ['factory', createEngine],
@@ -34,8 +34,8 @@ var injector = new AsyncInjector([
   }
 ]);
 
-await injector.invoke(function(car) {
-  car.start();
+await injector.invoke(async function(car) {
+  await car.start();
 });
 ```
 
