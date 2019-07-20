@@ -180,6 +180,13 @@ describe('async-injector', function() {
       module.value('abc', 'abc-value');
 
       var injector = new AsyncInjector([module]);
+      var barInstance = await injector.get('bar');
+
+      expect(barInstance).to.deep.equal({
+        baz: 'baz-value',
+        abc: 'abc-value'
+      });
+
       var fooInstance = await injector.get('foo');
 
       expect(fooInstance.bar).to.deep.equal({
@@ -311,6 +318,47 @@ describe('async-injector', function() {
       }, 'Cannot resolve circular dependency! ' + '(Resolving: a -> b -> a)');
     });
 
+
+    it('should instantiate asynchronously', async function() {
+
+      class Store {
+        constructor(config) {
+          this.config = config;
+        }
+
+        async getConfig(key) {
+          return this.config[key];
+        }
+      }
+
+      class Service {
+        constructor(key) {
+          this.key = key;
+        }
+      }
+
+      async function createService(store, injector) {
+
+        const config = await store.getConfig('service');
+
+        return new Service(config);
+      }
+
+      // when
+      const injector = new AsyncInjector([
+        {
+          'store': [ 'type', Store ],
+          'service': [ 'factory', createService ],
+          'config': [ 'value', { 'service': 'FOO' } ]
+        }
+      ]);
+
+      const service = await injector.get('service');
+
+      // then
+      expect(service.key).to.eql('FOO');
+    });
+
   });
 
 
@@ -400,6 +448,10 @@ describe('async-injector', function() {
         return { baz: a, abc: abc };
       }
 
+      async function asyncBar(/* baz */ a, abc) {
+        return { baz: a, abc: abc };
+      }
+
       var module = new Module;
       module.value('baz', 'baz-value');
       module.value('abc', 'abc-value');
@@ -407,6 +459,11 @@ describe('async-injector', function() {
       var injector = new AsyncInjector([module]);
 
       expect(await injector.invoke(bar)).to.deep.equal({
+        baz: 'baz-value',
+        abc: 'abc-value'
+      });
+
+      expect(await injector.invoke(asyncBar)).to.deep.equal({
         baz: 'baz-value',
         abc: 'abc-value'
       });
