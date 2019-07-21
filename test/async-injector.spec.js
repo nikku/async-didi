@@ -444,13 +444,21 @@ describe('async-injector', function() {
 
 
     it('should auto parse arguments/comments if no $inject defined', async function() {
-      function bar(/* baz */ a, abc) {
+      function fn(/* baz */ a, abc) {
         return { baz: a, abc: abc };
       }
 
-      async function asyncBar(/* baz */ a, abc) {
+      async function asyncFn(/* baz */ a, abc) {
         return { baz: a, abc: abc };
       }
+
+      const closure = (/* baz */ a, abc) => {
+        return { baz: a, abc: abc };
+      };
+
+      const asyncClosure = async (/* baz */ a, abc) => {
+        return { baz: a, abc: abc };
+      };
 
       var module = new Module;
       module.value('baz', 'baz-value');
@@ -458,12 +466,22 @@ describe('async-injector', function() {
 
       var injector = new AsyncInjector([module]);
 
-      expect(await injector.invoke(bar)).to.deep.equal({
+      expect(await injector.invoke(fn)).to.deep.equal({
         baz: 'baz-value',
         abc: 'abc-value'
       });
 
-      expect(await injector.invoke(asyncBar)).to.deep.equal({
+      expect(await injector.invoke(asyncFn)).to.deep.equal({
+        baz: 'baz-value',
+        abc: 'abc-value'
+      });
+
+      expect(await injector.invoke(closure)).to.deep.equal({
+        baz: 'baz-value',
+        abc: 'abc-value'
+      });
+
+      expect(await injector.invoke(asyncClosure)).to.deep.equal({
         baz: 'baz-value',
         abc: 'abc-value'
       });
