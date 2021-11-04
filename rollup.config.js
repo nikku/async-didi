@@ -18,6 +18,7 @@ const srcEntry = pkg.source;
 const umdDist = pkg['umd:main'];
 
 export default [
+
   // browser-friendly UMD build
   {
     input: srcEntry,
