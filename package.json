@@ -2,14 +2,14 @@
   "name": "async-didi",
   "version": "0.3.0",
   "description": "Async Dependency Injection for JavaScript",
-  "main": "dist/index.cjs",
+  "main": "dist/index.js",
   "module": "dist/index.mjs",
   "umd:main": "dist/async-didi.umd.js",
   "source": "lib/index.mjs",
   "exports": {
     ".": {
       "import": "./dist/index.mjs",
-      "require": "./dist/index.cjs"
+      "require": "./dist/index.js"
     }
   },
   "scripts": {
