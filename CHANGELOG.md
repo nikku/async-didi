@@ -6,6 +6,11 @@ All notable changes to [async-didi](https://github.com/nikku/async-didi) are doc
 
 ___Note:__ Yet to be released changes appear here._
 
+## 0.3.0
+
+* `CHORE`: add `exports` package JSON field
+* `CHORE`: require `Node >= 14`
+
 ## 0.2.1
 
 * `FIX`: correctly parse annotations in async closures
