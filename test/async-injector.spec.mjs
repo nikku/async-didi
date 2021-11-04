@@ -1,8 +1,9 @@
 import { expect } from 'chai';
 
-import { Module } from 'didi';
-
-import AsyncInjector from '../lib/async-injector';
+import {
+  Module,
+  AsyncInjector
+} from 'async-didi';
 
 
 describe('async-injector', function() {
@@ -412,7 +413,7 @@ describe('async-injector', function() {
       var module = new Module;
       var injector = new AsyncInjector([module]);
 
-      injector.invoke((function() {
+      await injector.invoke((function() {
         expect(this).to.equal(context);
       }), context);
     });
@@ -506,7 +507,10 @@ describe('async-injector', function() {
         expect(bar).to.equal(undefined);
       }];
 
-      injector.invoke(annotatedFn, null, { foo: 'FOO', bar: undefined });
+      await injector.invoke(annotatedFn, null, {
+        foo: 'FOO',
+        bar: undefined
+      });
     });
 
   });

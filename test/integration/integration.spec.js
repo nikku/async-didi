@@ -5,9 +5,9 @@ describe('integration', function() {
 
   describe('cjs bundle', function() {
 
-    var annotate = require('../../').annotate;
-    var AsyncInjector = require('../../').AsyncInjector;
-    var Module = require('../../').Module;
+    var annotate = require('async-didi').annotate;
+    var AsyncInjector = require('async-didi').AsyncInjector;
+    var Module = require('async-didi').Module;
 
 
     it('should expose API', function() {
