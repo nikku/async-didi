@@ -8,6 +8,10 @@ An async version of [`didi`](didi), the tiny dependency injection container for 
 ## Example
 
 ```js
+import {
+  AsyncInjector
+} from 'async-didi';
+
 function Car(engine) {
   this.start = function() {
     engine.start();
@@ -21,10 +25,6 @@ async function createEngine(power) {
     }
   };
 }
-
-const {
-  AsyncInjector
-} = require('async-didi');
 
 const injector = new AsyncInjector([
   {
