@@ -6,6 +6,10 @@ All notable changes to [async-didi](https://github.com/nikku/async-didi) are doc
 
 ___Note:__ Yet to be released changes appear here._
 
+## 0.3.1
+
+* `FIX`: export CommonJS with `js` extension (again)
+
 ## 0.3.0
 
 * `CHORE`: add `exports` package JSON field
