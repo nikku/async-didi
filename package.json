@@ -2,21 +2,19 @@
   "name": "async-didi",
   "version": "0.3.1",
   "description": "Async Dependency Injection for JavaScript",
-  "main": "dist/index.js",
-  "module": "dist/index.mjs",
-  "source": "lib/index.mjs",
+  "main": "./dist/index.js",
+  "source": "./lib/index.js",
+  "type": "module",
   "exports": {
-    ".": {
-      "import": "./dist/index.mjs",
-      "require": "./dist/index.js"
-    }
+    ".": "./dist/index.js",
+    "./package.json": "./package.json"
   },
   "scripts": {
     "all": "run-s lint bundle test test:integration",
     "bundle": "NODE_ENV=production rollup -c",
     "lint": "eslint .",
-    "test": "mocha test/*.spec.mjs",
-    "test:integration": "mocha test/integration/*.spec.js",
+    "test": "mocha test/*.spec.js",
+    "test:integration": "mocha test/integration/*.spec.*js",
     "prepare": "run-s bundle",
     "prepublishOnly": "run-s test:integration"
   },
