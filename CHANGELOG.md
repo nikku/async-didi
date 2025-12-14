@@ -6,6 +6,14 @@ All notable changes to [async-didi](https://github.com/nikku/async-didi) are doc
 
 ___Note:__ Yet to be released changes appear here._
 
+* `FEAT`: turn into ES module
+* `CHORE`: drop UMD distribution
+* `CHORE`: drop CJS distribution
+
+### Breaking Changes
+
+* Import from ESM in Node >= 20.12
+
 ## 0.3.1
 
 * `FIX`: export CommonJS with `js` extension (again)
