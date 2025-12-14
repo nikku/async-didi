@@ -36,11 +36,11 @@ describe('integration', function() {
             return 'foo-value';
           }
         ],
-        bar: ['value', 'bar-value'],
-        baz: ['type', BazType],
-        bub: ['type', BubType]
+        bar: [ 'value', 'bar-value' ],
+        baz: [ 'type', BazType ],
+        bub: [ 'type', BubType ]
       };
-      var injector = new AsyncInjector([module]);
+      var injector = new AsyncInjector([ module ]);
 
       expect(await injector.get('foo')).to.equal('foo-value');
       expect(await injector.get('bar')).to.equal('bar-value');
