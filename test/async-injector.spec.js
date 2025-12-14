@@ -265,6 +265,7 @@ describe('async-injector', function() {
 
 
     it('should throw error with full path if no provider', async function() {
+
       // a requires b requires c (not provided)
       function aFn(b) {
         return 'a-value';
