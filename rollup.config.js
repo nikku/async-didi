@@ -15,7 +15,7 @@ export default [
   {
     input: srcEntry,
     output: [
-      { file: pkg.main, format: 'es' }
+      { file: pkg.main, format: 'es', sourcemap: true }
     ],
     external: Object.keys(pkg.dependencies),
     plugins: pgl()
