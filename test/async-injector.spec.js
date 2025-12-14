@@ -27,11 +27,11 @@ describe('async-injector', function() {
           return 'foo-value';
         }
       ],
-      bar: ['value', 'bar-value'],
-      baz: ['type', BazType],
-      bub: ['type', BubType]
+      bar: [ 'value', 'bar-value' ],
+      baz: [ 'type', BazType ],
+      bub: [ 'type', BubType ]
     };
-    var injector = new AsyncInjector([module]);
+    var injector = new AsyncInjector([ module ]);
 
     expect(await injector.get('foo')).to.equal('foo-value');
     expect(await injector.get('bar')).to.equal('bar-value');
@@ -64,7 +64,7 @@ describe('async-injector', function() {
       module.value('bar', 'bar value');
       module.type('baz', BazType);
 
-      var injector = new AsyncInjector([module]);
+      var injector = new AsyncInjector([ module ]);
 
       expect(await injector.get('foo')).to.deep.equal({
         name: 'foo'
@@ -96,7 +96,7 @@ describe('async-injector', function() {
       module.value('bar', 'bar value');
       module.type('baz', BazType);
 
-      var injector = new AsyncInjector([module]);
+      var injector = new AsyncInjector([ module ]);
 
       expect(await injector.get('foo')).to.equal(await injector.get('foo'));
       expect(await injector.get('bar')).to.equal(await injector.get('bar'));
@@ -116,13 +116,13 @@ describe('async-injector', function() {
       }
 
       var module = new Module;
-      module.type('foo', [FooType]);
-      module.factory('bar', ['foo', barFactory]);
+      module.type('foo', [ FooType ]);
+      module.factory('bar', [ 'foo', barFactory ]);
 
-      var injector1 = new AsyncInjector([module]);
+      var injector1 = new AsyncInjector([ module ]);
       expect(await injector1.get('foo')).to.equal(await injector1.get('bar'));
 
-      var injector2 = new AsyncInjector([module]);
+      var injector2 = new AsyncInjector([ module ]);
       expect(await injector2.get('foo')).to.equal(await injector2.get('bar'));
     });
 
@@ -140,17 +140,17 @@ describe('async-injector', function() {
       }
 
       var module = new Module;
-      module.type('foo', [FooType]);
-      module.factory('bar', ['foo', barFactory]);
+      module.type('foo', [ FooType ]);
+      module.factory('bar', [ 'foo', barFactory ]);
 
-      var injector = new AsyncInjector([module]);
+      var injector = new AsyncInjector([ module ]);
       async function fn(foo, bar) {
         expect(foo).to.equal(await injector.get('foo'));
         expect(bar).to.equal(await injector.get('bar'));
 
         return false;
       }
-      var annotatedFn = ['foo', 'bar', fn];
+      var annotatedFn = [ 'foo', 'bar', fn ];
 
       await injector.invoke(annotatedFn);
       await injector.invoke(annotatedFn);
@@ -164,7 +164,7 @@ describe('async-injector', function() {
           this.baz = baz1;
         }
       }
-      Foo.$inject = ['bar', 'baz'];
+      Foo.$inject = [ 'bar', 'baz' ];
 
       async function bar(baz, abc) {
         return {
@@ -172,7 +172,7 @@ describe('async-injector', function() {
           abc: abc
         };
       }
-      bar.$inject = ['baz', 'abc'];
+      bar.$inject = [ 'baz', 'abc' ];
 
       var module = new Module;
       module.type('foo', Foo);
@@ -180,7 +180,7 @@ describe('async-injector', function() {
       module.value('baz', 'baz-value');
       module.value('abc', 'abc-value');
 
-      var injector = new AsyncInjector([module]);
+      var injector = new AsyncInjector([ module ]);
       var barInstance = await injector.get('bar');
 
       expect(barInstance).to.deep.equal({
@@ -215,12 +215,12 @@ describe('async-injector', function() {
       };
 
       var module = new Module;
-      module.type('foo', ['bar', 'baz', Foo]);
-      module.factory('bar', ['baz', 'abc', bar]);
+      module.type('foo', [ 'bar', 'baz', Foo ]);
+      module.factory('bar', [ 'baz', 'abc', bar ]);
       module.value('baz', 'baz-value');
       module.value('abc', 'abc-value');
 
-      var injector = new AsyncInjector([module]);
+      var injector = new AsyncInjector([ module ]);
       var fooInstance = await injector.get('foo');
 
       expect(fooInstance.bar).to.deep.equal({
@@ -240,7 +240,7 @@ describe('async-injector', function() {
         }
       });
 
-      var injector = new AsyncInjector([module]);
+      var injector = new AsyncInjector([ module ]);
 
       expect(await injector.get('config.a')).to.equal(1);
       expect(await injector.get('config.b.c')).to.equal(2);
@@ -251,14 +251,14 @@ describe('async-injector', function() {
       var module = new Module;
       module.value('a.b', 'a.b value');
 
-      var injector = new AsyncInjector([module]);
+      var injector = new AsyncInjector([ module ]);
       expect(await injector.get('a.b')).to.equal('a.b value');
     });
 
 
     it('should provide "injector"', async function() {
       var module = new Module;
-      var injector = new AsyncInjector([module]);
+      var injector = new AsyncInjector([ module ]);
 
       expect(await injector.get('injector')).to.equal(await injector);
     });
@@ -270,18 +270,18 @@ describe('async-injector', function() {
       function aFn(b) {
         return 'a-value';
       }
-      aFn.$inject = ['b'];
+      aFn.$inject = [ 'b' ];
 
       function bFn(c) {
         return 'b-value';
       }
-      bFn.$inject = ['c'];
+      bFn.$inject = [ 'c' ];
 
       var module = new Module;
       module.factory('a', aFn);
       module.factory('b', bFn);
 
-      var injector = new AsyncInjector([module]);
+      var injector = new AsyncInjector([ module ]);
 
       await expectThrows(function() {
         return injector.get('a');
@@ -291,7 +291,7 @@ describe('async-injector', function() {
 
     it('should return null if non-strict and no provider', async function() {
       var module = new Module;
-      var injector = new AsyncInjector([module]);
+      var injector = new AsyncInjector([ module ]);
       var notDefined = await injector.get('not-defined', false);
 
       return expect(notDefined).to.be.null;
@@ -302,18 +302,18 @@ describe('async-injector', function() {
       function aFn(b) {
         return 'a-value';
       }
-      aFn.$inject = ['b'];
+      aFn.$inject = [ 'b' ];
 
       function bFn(a) {
         return 'b-value';
       }
-      bFn.$inject = ['a'];
+      bFn.$inject = [ 'a' ];
 
       var module = new Module;
       module.factory('a', aFn);
       module.factory('b', bFn);
 
-      var injector = new AsyncInjector([module]);
+      var injector = new AsyncInjector([ module ]);
 
       await expectThrows(function() {
         return injector.get('a');
@@ -373,13 +373,13 @@ describe('async-injector', function() {
           abc: abc
         };
       }
-      bar.$inject = ['baz', 'abc'];
+      bar.$inject = [ 'baz', 'abc' ];
 
       var module = new Module;
       module.value('baz', 'baz-value');
       module.value('abc', 'abc-value');
 
-      var injector = new AsyncInjector([module]);
+      var injector = new AsyncInjector([ module ]);
 
       expect(await injector.invoke(bar)).to.deep.equal({
         baz: 'baz-value',
@@ -400,9 +400,9 @@ describe('async-injector', function() {
       module.value('baz', 'baz-value');
       module.value('abc', 'abc-value');
 
-      var injector = new AsyncInjector([module]);
+      var injector = new AsyncInjector([ module ]);
 
-      expect(await injector.invoke(['baz', 'abc', bar])).to.deep.equal({
+      expect(await injector.invoke([ 'baz', 'abc', bar ])).to.deep.equal({
         baz: 'baz-value',
         abc: 'abc-value'
       });
@@ -412,7 +412,7 @@ describe('async-injector', function() {
     it('should invoke function on given context', async function() {
       var context = {};
       var module = new Module;
-      var injector = new AsyncInjector([module]);
+      var injector = new AsyncInjector([ module ]);
 
       await injector.invoke((function() {
         expect(this).to.equal(context);
@@ -466,7 +466,7 @@ describe('async-injector', function() {
       module.value('baz', 'baz-value');
       module.value('abc', 'abc-value');
 
-      var injector = new AsyncInjector([module]);
+      var injector = new AsyncInjector([ module ]);
 
       expect(await injector.invoke(fn)).to.deep.equal({
         baz: 'baz-value',
@@ -503,10 +503,10 @@ describe('async-injector', function() {
 
       var injector = new AsyncInjector([ module ]);
 
-      var annotatedFn = ['foo', 'bar', function(foo, bar) {
+      var annotatedFn = [ 'foo', 'bar', function(foo, bar) {
         expect(foo).to.eql('FOO');
         expect(bar).to.equal(undefined);
-      }];
+      } ];
 
       await injector.invoke(annotatedFn, null, {
         foo: 'FOO',
@@ -526,13 +526,13 @@ describe('async-injector', function() {
           this.baz = baz1;
         }
       }
-      Foo.$inject = ['abc', 'baz'];
+      Foo.$inject = [ 'abc', 'baz' ];
 
       var module = new Module;
       module.value('baz', 'baz-value');
       module.value('abc', 'abc-value');
 
-      var injector = new AsyncInjector([module]);
+      var injector = new AsyncInjector([ module ]);
 
       expect(await injector.instantiate(Foo)).to.deep.equal({
         abc: 'abc-value',
@@ -543,7 +543,7 @@ describe('async-injector', function() {
     it('should return returned value from constructor if an object returned', async function() {
 
       var module = new Module;
-      var injector = new AsyncInjector([module]);
+      var injector = new AsyncInjector([ module ]);
       var returnedObj = {};
       function ObjCls() {
         return returnedObj;
@@ -578,15 +578,15 @@ describe('async-injector', function() {
       }
 
       var base = new Module;
-      base.type('foo', ['bar', 'baz', Foo]);
-      base.factory('blub', ['foo', createBlub]);
+      base.type('foo', [ 'bar', 'baz', Foo ]);
+      base.factory('blub', [ 'foo', createBlub ]);
       base.value('baz', 'baz-value');
       base.value('abc', 'abc-value');
 
       var extension = new Module;
-      extension.type('foo', ['baz', 'abc', Foo]);
+      extension.type('foo', [ 'baz', 'abc', Foo ]);
 
-      var injector = new AsyncInjector([base, extension]);
+      var injector = new AsyncInjector([ base, extension ]);
       var expectedFoo = {
         bar: 'baz-value',
         baz: 'abc-value'
@@ -613,7 +613,7 @@ describe('async-injector', function() {
       var mock = new Module;
       mock.value('bar', mocked);
 
-      var injector = new AsyncInjector([base, mock]);
+      var injector = new AsyncInjector([ base, mock ]);
 
       expect(await injector.get('bar')).to.equal(mocked);
     });
