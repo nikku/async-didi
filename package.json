@@ -30,11 +30,12 @@
     "injection",
     "injector"
   ],
+  "dependencies": {
+    "didi": "^6.1.0"
+  },
   "devDependencies": {
     "@rollup/plugin-commonjs": "^29.0.0",
-    "@rollup/plugin-node-resolve": "^16.0.3",
     "chai": "^6.2.1",
-    "didi": "^6.0.0",
     "eslint": "^9.39.2",
     "eslint-plugin-bpmn-io": "^2.2.0",
     "mocha": "^11.7.5",
