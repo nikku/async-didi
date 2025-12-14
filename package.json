@@ -11,7 +11,7 @@
   },
   "scripts": {
     "all": "run-s lint bundle test test:integration",
-    "bundle": "NODE_ENV=production rollup -c",
+    "bundle": "NODE_ENV=production rollup -c --bundleConfigAsCjs",
     "lint": "eslint .",
     "test": "mocha test/*.spec.js",
     "test:integration": "mocha test/integration/*.spec.*js",
@@ -31,15 +31,15 @@
     "injector"
   ],
   "devDependencies": {
-    "@rollup/plugin-commonjs": "^21.0.1",
-    "@rollup/plugin-node-resolve": "^13.0.6",
+    "@rollup/plugin-commonjs": "^29.0.0",
+    "@rollup/plugin-node-resolve": "^16.0.3",
     "chai": "^6.2.1",
     "didi": "^6.0.0",
     "eslint": "^7.32.0",
     "eslint-plugin-bpmn-io": "^0.12.0",
     "mocha": "^11.7.5",
     "npm-run-all2": "^8.0.4",
-    "rollup": "^2.59.0"
+    "rollup": "^4.53.3"
   },
   "engines": {
     "node": ">= 20.12"
