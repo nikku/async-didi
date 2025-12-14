@@ -1,11 +1,9 @@
-import resolve from '@rollup/plugin-node-resolve';
 import commonjs from '@rollup/plugin-commonjs';
 
 import pkg from './package.json';
 
 function pgl(plugins = []) {
   return [
-    resolve(),
     commonjs(),
     ...plugins
   ];
@@ -19,6 +17,7 @@ export default [
     output: [
       { file: pkg.main, format: 'es' }
     ],
+    external: Object.keys(pkg.dependencies),
     plugins: pgl()
   }
 ];
