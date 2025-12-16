@@ -166,6 +166,63 @@ describe('typed', function() {
   });
 
 
+  describe('#init', function() {
+
+    it('should initialize', async function() {
+
+      // given
+      const loaded : string[] = [];
+
+      const injector = new AsyncInjector([
+        {
+          __init__: [ () => loaded.push('first') ]
+        },
+        {
+          __init__: [ () => loaded.push('second') ]
+        }
+      ]);
+
+      // when
+      await injector.init();
+
+      // then
+      expect(loaded).to.eql([
+        'first',
+        'second'
+      ]);
+    });
+
+
+    it('should load dependent modules', async function() {
+
+      // given
+      const loaded : string[] = [];
+
+      const injector = new AsyncInjector([
+        {
+          __depends__: [
+            {
+              __init__: [ () => loaded.push('dep') ]
+            }
+          ],
+          __init__: [ () => loaded.push('module') ]
+        }
+      ]);
+
+      // when
+      await injector.init();
+
+      // then
+      expect(loaded).to.eql([
+        'dep',
+        'module'
+      ]);
+    });
+
+  });
+
+
+
   describe('#invoke', function() {
 
     it('should invoke', async function() {
