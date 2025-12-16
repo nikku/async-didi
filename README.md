@@ -2,7 +2,7 @@
 
 [![Build Status](https://github.com/nikku/async-didi/workflows/CI/badge.svg)](https://github.com/nikku/async-didi/actions?query=workflow%3ACI)
 
-An async version of [`didi`](didi), the tiny dependency injection container for JavaScript.
+An async version of [`didi`][didi], the tiny [inversion of control](https://en.wikipedia.org/wiki/Inversion_of_control) container for JavaScript.
 
 
 ## Example
@@ -40,6 +40,13 @@ await injector.invoke(async function(car) {
 ```
 
 For more examples, check out [the tests](https://github.com/nikku/async-didi/blob/main/test/async-injector.spec.js).
+
+
+## Usage
+
+Refer to [`didi` documentation](https://github.com/nikku/didi?tab=readme-ov-file#usage) and enjoy the ability to define `async` factory functions and module initializers.
+
+See also [comparison](#comparison-to-didi).
 
 
 ## Comparison to [`didi`][didi]
