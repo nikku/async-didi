@@ -10,11 +10,12 @@
     "./package.json": "./package.json"
   },
   "scripts": {
-    "all": "run-s lint bundle test test:integration",
+    "all": "run-s lint bundle test check-types integration-test",
     "bundle": "NODE_ENV=production rollup -c --bundleConfigAsCjs",
     "lint": "eslint .",
+    "check-types": "tsc --pretty --noEmit",
     "test": "mocha test/*.spec.js",
-    "test:integration": "mocha test/integration/*.spec.*js",
+    "integration-test": "(cd test/integration && mocha --import=tsx *.spec.{cjs,ts})",
     "prepare": "run-s bundle",
     "prepublishOnly": "run-s test:integration"
   },
@@ -35,12 +36,19 @@
   },
   "devDependencies": {
     "@rollup/plugin-commonjs": "^29.0.0",
+    "@types/chai": "^5.2.3",
+    "@types/mocha": "^10.0.10",
+    "@types/node": "^24.10.4",
+    "@web/rollup-plugin-copy": "^0.5.1",
     "chai": "^6.2.1",
     "eslint": "^9.39.2",
     "eslint-plugin-bpmn-io": "^2.2.0",
     "mocha": "^11.7.5",
     "npm-run-all2": "^8.0.4",
-    "rollup": "^4.53.3"
+    "rollup": "^4.53.3",
+    "tsx": "^4.21.0",
+    "typescript": "^5.9.3",
+    "typescript-eslint": "^8.50.0"
   },
   "engines": {
     "node": ">= 20.12"
