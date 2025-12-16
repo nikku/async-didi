@@ -649,6 +649,218 @@ describe('async-injector', function() {
 
   });
 
+
+  describe('initialize (__init__)', function() {
+
+    it('should init component', async function() {
+
+      // given
+      const injector = new AsyncInjector([
+        {
+          __init__: [ 'foo' ],
+          'foo': [ 'factory', async function(bar) {
+            bar.initialized = true;
+
+            return bar;
+          } ],
+          'bar': [ 'value', {} ]
+        }
+      ]);
+
+      // when
+      await injector.init();
+
+      const bar = await injector.get('bar');
+
+      // then
+      expect(bar.initialized).to.be.true;
+    });
+
+
+    it('should call initializer', async function() {
+
+      // given
+      const injector = new AsyncInjector([
+        {
+          __init__: [ async function(bar) {
+            bar.initialized = true;
+          } ],
+          'bar': [ 'value', {} ]
+        }
+      ]);
+
+      const bar = await injector.get('bar');
+
+      // assume
+      expect(bar.initialized).not.to.exist;
+
+      // when
+      await injector.init();
+
+      // then
+      expect(bar.initialized).to.be.true;
+    });
+
+
+    it('should execute only once', async function() {
+
+      // given
+      const injector = new AsyncInjector([
+        {
+          __init__: [ async function(bar) {
+            bar.initCalled++;
+
+            return bar;
+          } ],
+          'bar': [ 'value', { initCalled: 0 } ]
+        }
+      ]);
+
+      await injector.init();
+
+      // when
+      await injector.init();
+
+      const bar = await injector.get('bar');
+
+      // then
+      expect(bar.initCalled).to.eql(1);
+    });
+
+
+    describe('error handling', function() {
+
+      it('should indicate missing dependency', async function() {
+
+        // given
+        const injector = new AsyncInjector([
+          {
+            __init__: [ 'foo' ]
+          }
+        ]);
+
+        // then
+        let expectedError;
+
+        try {
+          await injector.init();
+        } catch (err) {
+          expect(/** @type { Error } */ (err).message).to.match(/No provider for "foo"!/);
+
+          expectedError = err;
+        }
+
+        expect(expectedError).to.exist;
+      });
+
+
+      it('should indicate initialization error', async function() {
+
+        // given
+        const injector = new AsyncInjector([
+          {
+            __init__: [ function() {
+              throw new Error('INIT ERROR');
+            } ]
+          }
+        ]);
+
+        // then
+        let expectedError;
+
+        try {
+          await injector.init();
+        } catch (err) {
+          expect(/** @type { Error } */ (err).message).to.match(/INIT ERROR/);
+
+          expectedError = err;
+        }
+
+        expect(expectedError).to.exist;
+      });
+
+    });
+
+  });
+
+
+  describe('module dependencies (__depends__)', function() {
+
+    it('should load in reverse order', async function() {
+
+      const loaded = [];
+
+      // given
+      const injector = new AsyncInjector([
+        {
+          __depends__: [
+            {
+              __depends__: [
+                {
+                  __init__: [ function() { loaded.push('L2_A'); } ]
+                },
+                {
+                  __init__: [ function() { loaded.push('L2_B'); } ]
+                }
+              ],
+              __init__: [ function() { loaded.push('L1'); } ]
+            }
+          ],
+          __init__: [ function() { loaded.push('ROOT'); } ]
+        }
+      ]);
+
+      // when
+      await injector.init();
+
+      // then
+      expect(loaded).to.eql([
+        'L2_A',
+        'L2_B',
+        'L1',
+        'ROOT'
+      ]);
+    });
+
+
+    it('should de-duplicate', async function() {
+
+      const loaded = [];
+
+      const duplicateModule = /** @type ModuleDeclaration */ ({
+        __init__: [ function() { loaded.push('DUP'); } ]
+      });
+
+      // given
+      const injector = new AsyncInjector([
+        {
+          __depends__: [
+            {
+              __depends__: [
+                duplicateModule,
+                duplicateModule
+              ],
+              __init__: [ function() { loaded.push('L1'); } ]
+            },
+            duplicateModule
+          ],
+          __init__: [ function() { loaded.push('ROOT'); } ]
+        }
+      ]);
+
+      // when
+      await injector.init();
+
+      // then
+      expect(loaded).to.eql([
+        'DUP',
+        'L1',
+        'ROOT'
+      ]);
+    });
+
+  });
+
 });
 
 

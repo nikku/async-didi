@@ -16,6 +16,10 @@ export {
 
 export type Annotated = InjectAnnotated;
 
+export type InitializerFunction = {
+  (...args: any[]): unknown | Promise<unknown>
+} & Annotated;
+
 export type FactoryFunction<T> = {
   (...args: any[]): T | Promise<T>;
 } & Annotated;
@@ -25,6 +29,8 @@ export type ArrayArgs<T> = [ ...string[], T ];
 export type ArrayFunc<T> = [ ...string[], FactoryFunction<T> ];
 
 export type ArrayConstructor<T> = [ ...string[], Constructor<T> ];
+
+export type Initializer = InitializerFunction | ArrayArgs<InitializerFunction>;
 
 export type FactoryDefinition<T> = FactoryFunction<T> | ArrayArgs<FactoryFunction<T>>;
 
@@ -43,6 +49,8 @@ export type ServiceDeclaration<T> =
 
 export type ModuleDeclaration = {
   [name: string]: ServiceDeclaration<unknown> | unknown;
+  __init__?: Array<string|InitializerFunction>;
+  __depends__?: Array<ModuleDeclaration>;
 };
 
 // async-injector.js
@@ -132,6 +140,12 @@ export class AsyncInjector<
    * ```
    */
   instantiate<T>(constructor: ArrayConstructor<T>): Promise<T>;
+
+  /**
+   * Initializes the injector once, calling `__init__`
+   * hooks on registered injector modules.
+   */
+  init(): Promise<void>;
 
   /**
    * @internal
