@@ -1,23 +1,31 @@
+import { copy } from '@web/rollup-plugin-copy';
+
 import commonjs from '@rollup/plugin-commonjs';
 
-import pkg from './package.json';
+import pkg from './package.json' with { type: 'json' };
 
-function pgl(plugins = []) {
-  return [
-    commonjs(),
-    ...plugins
-  ];
-}
-
-const srcEntry = pkg.source;
+const pkgExport = pkg.exports['.'];
 
 export default [
   {
-    input: srcEntry,
+    input: 'lib/index.js',
     output: [
-      { file: pkg.main, format: 'es', sourcemap: true }
+      {
+        file: pkgExport,
+        format: 'es',
+        sourcemap: true
+      }
     ],
-    external: Object.keys(pkg.dependencies),
-    plugins: pgl()
+    external: [
+      'didi'
+    ],
+    plugins: [
+
+      // @ts-expect-error 'no call signatures'
+      commonjs(),
+      copy({
+        patterns: '**/*.d.ts', rootDir: './lib'
+      })
+    ]
   }
 ];

@@ -4,6 +4,10 @@ import {
   AsyncInjector
 } from 'async-didi';
 
+/**
+ * @typedef {import('async-didi').ModuleDeclaration} ModuleDeclaration
+ */
+
 
 describe('async-injector', function() {
 
@@ -19,7 +23,7 @@ describe('async-injector', function() {
       this.name = 'baz';
     }
 
-    const module = ({
+    const module = /** @type ModuleDeclaration */ ({
       foo: [
         'factory',
         async function() {
@@ -55,7 +59,7 @@ describe('async-injector', function() {
         }
       }
 
-      const module = ({
+      const module = /** @type ModuleDeclaration */ ({
         'foo': [ 'factory', async function() {
           return {
             name: 'foo'
@@ -88,7 +92,7 @@ describe('async-injector', function() {
         }
       }
 
-      const module = ({
+      const module = /** @type ModuleDeclaration */ ({
         'foo': [ 'factory', async function() {
           return {
             name: 'foo'
@@ -117,7 +121,7 @@ describe('async-injector', function() {
         return foo;
       }
 
-      const module = ({
+      const module = /** @type ModuleDeclaration */ ({
         'foo': [ 'type', FooType ],
         'bar': [ 'factory', barFactory ]
       });
@@ -142,7 +146,7 @@ describe('async-injector', function() {
         return foo;
       }
 
-      const module = ({
+      const module = /** @type ModuleDeclaration */ ({
         'foo': [ 'type', FooType ],
         'bar': [ 'factory', barFactory ]
       });
@@ -154,10 +158,10 @@ describe('async-injector', function() {
 
         return false;
       }
-      const annotatedFn = [ 'foo', 'bar', fn ];
 
-      await injector.invoke(annotatedFn);
-      await injector.invoke(annotatedFn);
+      await injector.invoke([ 'foo', 'bar', fn ]);
+
+      await injector.invoke([ 'foo', 'bar', fn ]);
     });
 
 
@@ -178,7 +182,7 @@ describe('async-injector', function() {
       }
       bar.$inject = [ 'baz', 'abc' ];
 
-      const module = ({
+      const module = /** @type ModuleDeclaration */ ({
         'foo': [ 'type', Foo ],
         'bar': [ 'factory', bar ],
         'baz': [ 'value', 'baz-value' ],
@@ -219,7 +223,7 @@ describe('async-injector', function() {
         };
       };
 
-      const module = ({
+      const module = /** @type ModuleDeclaration */ ({
         'foo': [ 'type', [ 'bar', 'baz', Foo ] ],
         'bar': [ 'factory', [ 'baz', 'abc', bar ] ],
         'baz': [ 'value', 'baz-value' ],
@@ -239,7 +243,7 @@ describe('async-injector', function() {
 
     it('should inject properties', async function() {
 
-      const module = ({
+      const module = /** @type ModuleDeclaration */ ({
         'config': [ 'value', {
           a: 1,
           b: {
@@ -319,7 +323,7 @@ describe('async-injector', function() {
       }
       bFn.$inject = [ 'a' ];
 
-      const module = ({
+      const module = /** @type ModuleDeclaration */ ({
         a: [ 'factory', aFn ],
         b: [ 'factory', bFn ]
       });
@@ -386,7 +390,7 @@ describe('async-injector', function() {
       }
       bar.$inject = [ 'baz', 'abc' ];
 
-      const module = ({
+      const module = /** @type ModuleDeclaration */ ({
         'baz': [ 'value', 'baz-value' ],
         'abc': [ 'value', 'abc-value' ]
       });
@@ -408,7 +412,7 @@ describe('async-injector', function() {
         };
       }
 
-      const module = ({
+      const module = /** @type ModuleDeclaration */ ({
         'baz': [ 'value', 'baz-value' ],
         'abc': [ 'value', 'abc-value' ]
       });
@@ -427,6 +431,8 @@ describe('async-injector', function() {
       const injector = new AsyncInjector([ ]);
 
       await injector.invoke((function() {
+
+        // @ts-expect-error
         expect(this).to.equal(context);
       }), context);
     });
@@ -484,7 +490,7 @@ describe('async-injector', function() {
         return { baz: a, abc: abc };
       };
 
-      const module = ({
+      const module = /** @type ModuleDeclaration */ ({
         'baz': [ 'value', 'baz-value' ],
         'abc': [ 'value', 'abc-value' ]
       });
@@ -526,15 +532,10 @@ describe('async-injector', function() {
 
       const injector = new AsyncInjector([ module ]);
 
-      const annotatedFn = [ 'foo', 'bar', function(foo, bar) {
+      await injector.invoke([ 'foo', 'bar', function(foo, bar) {
         expect(foo).to.eql('FOO');
         expect(bar).to.equal(undefined);
-      } ];
-
-      await injector.invoke(annotatedFn, null, {
-        foo: 'FOO',
-        bar: undefined
-      });
+      } ], null, { foo: 'FOO', bar: undefined });
     });
 
   });
@@ -551,7 +552,7 @@ describe('async-injector', function() {
       }
       Foo.$inject = [ 'abc', 'baz' ];
 
-      const module = ({
+      const module = /** @type ModuleDeclaration */ ({
         'baz': [ 'value', 'baz-value' ],
         'abc': [ 'value', 'abc-value' ]
       });
@@ -661,6 +662,6 @@ async function expectThrows(asyncFn, message) {
 
     expect.fail('expected error');
   } catch (err) {
-    expect(err.message).to.eql(message);
+    expect(/** @type { Error } */ (err).message).to.eql(message);
   }
 }

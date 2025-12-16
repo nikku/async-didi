@@ -1,0 +1,14 @@
+{
+  "compilerOptions": {
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "checkJs": true,
+    "rootDir": ".",
+    "strict": true,
+    "noImplicitAny": false,
+    "resolveJsonModule": true
+  },
+  "exclude": [
+    "dist"
+  ]
+}
