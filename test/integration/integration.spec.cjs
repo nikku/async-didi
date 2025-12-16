@@ -1,19 +1,19 @@
-var expect = require('chai').expect;
+const { expect } = require('chai');
 
 
 describe('integration', function() {
 
-  describe('cjs bundle', function() {
+  describe('node bundle', function() {
 
-    var annotate = require('async-didi').annotate;
-    var AsyncInjector = require('async-didi').AsyncInjector;
-    var Module = require('async-didi').Module;
+    const {
+      annotate,
+      AsyncInjector
+    } = require('async-didi');
 
 
     it('should expose API', function() {
       expect(annotate).to.exist;
       expect(AsyncInjector).to.exist;
-      expect(Module).to.exist;
     });
 
 
@@ -29,29 +29,48 @@ describe('integration', function() {
         this.name = 'baz';
       }
 
-      var module = {
-        foo: [
-          'factory',
-          async function() {
-            return 'foo-value';
-          }
-        ],
-        bar: [ 'value', 'bar-value' ],
-        baz: [ 'type', BazType ],
-        bub: [ 'type', BubType ]
-      };
-      var injector = new AsyncInjector([ module ]);
+      const injector = new AsyncInjector([
+        {
+          foo: [
+            'factory',
+            function() {
+              return 'foo-value';
+            }
+          ],
+          bar: [ 'value', 'bar-value' ],
+          baz: [ 'type', BazType ],
+          bub: [ 'type', BubType ]
+        }
+      ]);
 
       expect(await injector.get('foo')).to.equal('foo-value');
       expect(await injector.get('bar')).to.equal('bar-value');
 
-      var bub = await injector.get('bub');
+      const bub = await injector.get('bub');
       expect(bub).to.be.an.instanceof(BubType);
       expect(bub.name).to.eql('bub');
 
-      var baz = await injector.get('baz');
+      const baz = await injector.get('baz');
       expect(baz).to.be.an.instanceof(BazType);
       expect(baz.name).to.eql('baz');
+    });
+
+  });
+
+
+  describe('esm bundle', function() {
+
+    it('should expose API', async function() {
+
+      // when
+      const {
+        annotate,
+        AsyncInjector
+      } = await import('async-didi');
+
+      // then
+      expect(annotate).to.exist;
+      expect(AsyncInjector).to.exist;
     });
 
   });
