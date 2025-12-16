@@ -14,13 +14,13 @@ import {
 
 function Car(engine) {
   this.start = function() {
-    engine.start();
+    return engine.start();
   };
 }
 
 async function createEngine(power) {
   return {
-    start: function() {
+    async start() {
       console.log('Starting engine with ' + power + 'hp');
     }
   };
