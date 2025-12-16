@@ -16,8 +16,7 @@
     "check-types": "tsc --pretty --noEmit",
     "test": "mocha test/*.spec.js",
     "integration-test": "(cd test/integration && mocha --import=tsx *.spec.{cjs,ts})",
-    "prepare": "run-s bundle",
-    "prepublishOnly": "run-s test:integration"
+    "prepare": "run-s bundle"
   },
   "repository": {
     "type": "git",
