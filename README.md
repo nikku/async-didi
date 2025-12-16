@@ -39,7 +39,7 @@ await injector.invoke(async function(car) {
 });
 ```
 
-For more examples, check out [the tests](https://github.com/nikku/async-didi/blob/master/test/async-injector.spec.js).
+For more examples, check out [the tests](https://github.com/nikku/async-didi/blob/main/test/async-injector.spec.js).
 
 
 ## Comparison to [`didi`][didi]
